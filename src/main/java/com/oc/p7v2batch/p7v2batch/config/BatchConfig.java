@@ -1,6 +1,7 @@
 package com.oc.p7v2batch.p7v2batch.config;
 
-import com.oc.p7v2batch.p7v2batch.service.BatchService;
+import com.oc.p7v2batch.p7v2batch.service.BorrowProcessingService;
+import com.oc.p7v2batch.p7v2batch.service.ReservationProcessingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.core.Job;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
@@ -20,13 +20,15 @@ import java.io.IOException;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Log4j2
 public class BatchConfig {
-    private final BatchService batchService;
-
-    @Scheduled(cron=" 0 42 16 * * *") // (s min h j m jourSemaine)
+    private final BorrowProcessingService borrowProcessingService;
+private final ReservationProcessingService reservationProcessingService;
+    /*@Scheduled(cron=" 0 42 16 * * *") // (s min h j m jourSemaine)*/
+    @Scheduled(cron=" 0 31 18 * * *") // (s min h j m jourSemaine)
     public Job job() throws IOException {
         log.info("in BatchConfig in job method");
             log.info("in BatchConfig in job method when job is enable");
-            batchService.batchProcessing();
+            borrowProcessingService.borrowBatchProcessing();
+            reservationProcessingService.reservationBatchProcessing();
         return null;
 
     }
