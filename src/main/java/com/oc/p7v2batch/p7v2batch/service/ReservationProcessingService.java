@@ -1,10 +1,6 @@
 package com.oc.p7v2batch.p7v2batch.service;
 
-import com.oc.p7v2batch.p7v2batch.bean.BookBean;
-import com.oc.p7v2batch.p7v2batch.bean.BorrowBean;
 import com.oc.p7v2batch.p7v2batch.bean.ReservationBean;
-import com.oc.p7v2batch.p7v2batch.util.BookRetrieverUtil;
-import com.oc.p7v2batch.p7v2batch.util.ReservationIdsComparator;
 import com.oc.p7v2batch.p7v2batch.util.ReservationRetrieverUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -17,7 +13,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
-import java.time.Instant;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -56,6 +52,7 @@ public class ReservationProcessingService {
 
     private void sendmail(ReservationBean reservationBean) throws AddressException, MessagingException, IOException {
         log.info(" in reservationBatchProcessing in sendmail method");
+        String formattedEnDate = new SimpleDateFormat("dd/MM/yyyy").format(reservationBean.getEndDate());
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -71,7 +68,7 @@ public class ReservationProcessingService {
         String emailBody = "Bonjour " + reservationBean.getFirstName() + " " + reservationBean.getLastName() + ","
                 + "\nLe livre " + reservationBean.getBookTitle() + " de " + reservationBean.getBookAuthor()
                 + " est de nouveau disponible. \nMerci de venir au plus vite à la bibliothèque de "
-                + reservationBean.getLibraryName() + " pour le récupérer. Il est mis de côté pour vous jusqu'au " + reservationBean.getEndDate()
+                + reservationBean.getLibraryName() + " pour le récupérer. Il est mis de côté pour vous jusqu'au " + formattedEnDate
                 + ". Passé ce délai votre réservation sera automatiquement annulée!"
                 + "\n Les horaires d'ouverture sont : " + reservationBean.getOpeningTime() + "\nCordialement. \nLes Bibliothèques de Katzenheim";
         Message msg = new MimeMessage(session);
