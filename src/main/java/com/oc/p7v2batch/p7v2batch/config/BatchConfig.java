@@ -23,7 +23,7 @@ public class BatchConfig {
     private final BorrowProcessingService borrowProcessingService;
 private final ReservationProcessingService reservationProcessingService;
     /*@Scheduled(cron=" 0 42 16 * * *") // (s min h j m jourSemaine)*/
-    @Scheduled(cron=" 0 50 14 * * *") // (s min h j m jourSemaine)
+    @Scheduled(cron=" 0 10 13 * * *") // (s min h j m jourSemaine)
     public Job job() throws IOException {
         log.info("in BatchConfig in job method");
             log.info("in BatchConfig in job method when job is enable");
